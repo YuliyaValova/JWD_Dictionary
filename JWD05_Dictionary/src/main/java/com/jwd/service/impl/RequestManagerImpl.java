@@ -1,7 +1,7 @@
 package com.jwd.service.impl;
 
-import com.jwd.Dao.DictionaryDatabase;
-import com.jwd.Dao.DictionaryStarterSet;
+import com.jwd.dao.DictionaryDatabase;
+import com.jwd.dao.DictionaryStarterSet;
 import com.jwd.entity.PairOfWords;
 import com.jwd.service.RequestManager;
 
@@ -13,13 +13,14 @@ public class RequestManagerImpl implements RequestManager {
 
     @Override
     public void addWordsPair(PairOfWords pair) {
-        int index=-1; boolean isRewritten =false;
-        for (PairOfWords i: database.getVocabulary()) {
+        int index = -1;
+        boolean isRewritten = false;
+        for (PairOfWords i : database.getVocabulary()) {
             index++;
-            if(i.getEnWord().equalsIgnoreCase(pair.getEnWord())){
+            if (i.getEnWord().equalsIgnoreCase(pair.getEnWord())) {
                 System.out.println("Such a word was already in the dictionary. Its meaning has been rewritten.");
-                PairOfWords rewritenPair = new PairOfWords(i.getEnWord(),pair.getRuWord());
-                database.setChosenWord(index,rewritenPair);
+                PairOfWords rewritenPair = new PairOfWords(i.getEnWord(), pair.getRuWord());
+                database.setChosenWord(index, rewritenPair);
                 isRewritten = true;
                 break;
             }
@@ -31,18 +32,19 @@ public class RequestManagerImpl implements RequestManager {
 
     @Override
     public String findEnglishWord(String inputWord) {
-        for (PairOfWords i: database.getVocabulary()){
-            if(i.getRuWord().equalsIgnoreCase(inputWord)) {
-                return i.getEnWord();
+        String searchingResult = "";
+        for (PairOfWords i : database.getVocabulary()) {
+            if (i.getRuWord().equalsIgnoreCase(inputWord)) {
+                searchingResult += "[" + i.getEnWord() + "] ";
             }
         }
-        return null;
+        return searchingResult;
     }
 
     @Override
     public String findRussianWord(String inputWord) {
-        for (PairOfWords i: database.getVocabulary()){
-            if(i.getEnWord().equalsIgnoreCase(inputWord)) {
+        for (PairOfWords i : database.getVocabulary()) {
+            if (i.getEnWord().equalsIgnoreCase(inputWord)) {
                 return i.getRuWord();
             }
         }
@@ -61,10 +63,10 @@ public class RequestManagerImpl implements RequestManager {
 
     @Override
     public ArrayList<PairOfWords> selectWordsForQuiz() {
-        int min=0, max = database.getSize()-1;
+        int min = 0, max = database.getSize() - 1;
         ArrayList<PairOfWords> selectList = new ArrayList<PairOfWords>();
-        for(int i=0; i<5; i++){
-            int rand = min + (int)(Math.random() * ((max - min) + 1));
+        for (int i = 0; i < 5; i++) {
+            int rand = min + (int) (Math.random() * ((max - min) + 1));
             selectList.add(database.getChosenPair(rand));
         }
         return selectList;

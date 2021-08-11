@@ -40,7 +40,7 @@ public class PairOfWords {
     @Override
     public String toString() {
         return "[" + enWord +
-                ";" + ruWord+"]";
+                ";" + ruWord + "]";
     }
 
 }
